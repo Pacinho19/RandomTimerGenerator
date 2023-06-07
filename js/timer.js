@@ -85,14 +85,6 @@ function validTimeComponent(name) {
     var comp = document.getElementById(name);
     var val = parseInt(checkEmpty(comp.value));
 
-    console.log(comp.min);
-    console.log(comp.max);
-
-    console.log('======');
-
-    console.log(val);
-    console.log(val <= comp.max);
-
     var isValid = val >= comp.min && val <= comp.max;
 
     if (!isValid)
