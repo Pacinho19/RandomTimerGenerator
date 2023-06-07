@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Random Timer Generator</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.css">
+
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    
+    <div class="row" style="margin-top: 2%;">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header" style="text-align: center;">
+                    <h3>Random Timer Generator</h1>
+                </div>
+                <div class="card-body" id="timeSettings">
+                    <div class="row">
+                        <div class="col-md-6" style="text-align: right;margin: auto">Minimum</div>
+                        <div class="col-md-6">
+                            <button type="button" class="btn btn-light" style="height: 90%;margin: auto;width:90%"
+                                onclick="selectTimeModal('Minimum')" id="minimumBtn">15 seconds</button>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top: 1%;">
+                        <div class="col-md-6" style="text-align: right;margin: auto">Maximum</div>
+                        <div class="col-md-6">
+                            <button type="button" class="btn btn-light" style="height: 90%;margin: auto;width:90%"
+                                onclick="selectTimeModal('Maximum')" id="maximumBtn">1 minutes</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6" style="text-align: right;margin: auto">Show countdown</div>
+                        <div class="col-md-6">
+                            <div class="custom-control custom-switch" style="width: 100%;text-align: left;">
+                                <input type="checkbox" class="custom-control-input" id="showCountDown" checked>
+                                <label class="custom-control-label" for="showCountDown"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6" style="text-align: right;margin: auto">Sound</div>
+                        <div class="col-md-6">
+                            <div class="custom-control custom-switch" style="width: 100%;text-align: left;">
+                                <input type="checkbox" class="custom-control-input" id="sound" checked>
+                                <label class="custom-control-label" for="sound"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top: 2%;">
+                        <button id="startBtn" type="button" class="btn btn-primary" style="width: 90%;margin: auto"
+                            onclick="start()">Start</button>
+                    </div>
+                
+                </div>
+                <div class="card-body"  id="timer">
+                    <div style="margin-top: 2%;">
+                        <h3 id="timeInfo" style="text-align: center;"></h3>
+                        <progress min="0" max="100" value="0" id="timeProgress"
+                            style="display: none;width: 90%;margin: 0 auto;"></progress>
+        
+                        <div  style="margin-top: 2%;text-align: center;width: 100%;" id="countDownProperties">
+                            <button id="cancelBtn" type="button" class="btn btn-danger"
+                                style="width: 90%;margin: auto;display: none;" onclick="cancel()">Cancel</button>         
+                        </div>
+        
+                        <div class="col-md-3"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="selectTimeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="selectTimeModalTitle"></h5>
+                            <button type="button" class="close" onclick="saveTime()" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-10">
+                                    <div class="row">
+                                        <div class="col-md-4" style="text-align: center;">
+                                            <span style="text-align: center;">Hours</span>
+                                            <input id="hours" type="number" min="0" max="99" step="1" required
+                                                onkeyup="validInputTime()" style="text-align: center;">
+                                        </div>
+                                        <div class="col-md-4" style="text-align: center;">
+                                            <span style="text-align: center;">Minutes</span>
+                                            <input id="minutes" type="number" min="0" max="59" step="1" required
+                                                onkeyup="validInputTime()" style="text-align: center;">
+                                        </div>
+                                        <div class="col-md-4" style="text-align: center;">
+                                            <span style="text-align: center;">Seconds</span>
+                                            <input id="seconds" type="number" min="0" max="59" step="1" required
+                                                onkeyup="validInputTime()" style="text-align: center;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-1"></div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" onclick="saveTime()">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="saveTime()">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script src="js/timer.js"></script>
+</body>
+
+
+</html>
